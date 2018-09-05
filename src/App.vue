@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
   .link {
     margin: 20px;
   }
