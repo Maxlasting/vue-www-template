@@ -13,7 +13,7 @@ module.exports = {
   // 静态资源存放目录，例如 mock 数据，如初始目录的 data.json 可以通过请求 /mock/data.json 得到
   contentBase: join(__dirname, './static'),
   // 对应 output 的 publicPath
-  publicPath: '/,
+  publicPath: '/',
   // 是否自动打开浏览器
   open: false,
   hot: true,
