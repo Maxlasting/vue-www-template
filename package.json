@@ -1,13 +1,13 @@
 {
-  "name": "{{ name }}",
+  "name": "F",
   "version": "0.0.1",
   "description": "{{ description }}",
   "main": "./src/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
     "dev": "npm run clean && cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js",
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --progress --color --config ./build/webpack.build.config.js",
-    "test": "npm run clean && cross-env NODE_ENV=production webpack --progress --color --config ./build/webpack.test.config.js",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --color --config ./build/webpack.build.config.js",
+    "test": "npm run clean && cross-env NODE_ENV=production TEST_ENV=yes webpack  --color --config ./build/webpack.test.config.js",
     "lint": "eslint --ext .js --ext .vue src/",
     "fixed": "eslint --fix --ext .js,.vue src/",
     "precommit": "npm run lint"
@@ -28,6 +28,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.1.4",
     "css-loader": "^1.0.0",
+    "cssnano": "^4.1.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -41,29 +42,25 @@
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
-    "mini-css-extract-plugin": "^0.4.2",
+    "mini-css-extract-plugin": "^0.4.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^2.1.4",
     "rimraf": "^2.6.2",
     "url-loader": "^1.1.1",
     "vue-loader": "^15.4.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.17.2",
+    "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7",
+    "webpack-dev-server": "^3.1.8",
     "webpack-merge": "^4.1.2",
     "webpack-notifier": "^1.6.0",
     "webpack-progress-ora-plugin": "^1.2.1",
-    "webpackbar": "^2.6.1"
+    "webpackbar": "^2.6.3"
   },
   "dependencies": {
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  }
 }

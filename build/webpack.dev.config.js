@@ -61,7 +61,7 @@ const config = merge(baseConfig, {
     clientLogLevel: 'none',
     overlay: { warnings: true, errors: true },
     quiet: true,
-    progress: true,
+    progress: false,
     historyApiFallback: {
       index: publicPath + 'index.html'
     }
