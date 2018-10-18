@@ -5,21 +5,15 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const NotifierPlugin = require('webpack-Notifier')
 const { publicPath, alwaysNotify } = require('../config.js')
 
-const cssLoaders = (MiniCssExtractPlugin) => {
-  const cssLoaderMap = new Map([
+const cssLoader = (MiniCssExtractPlugin) => {
+  const loaderMap = new Map([
     [/\.css$/, 'css-loader'],
     [/\.scss$/, 'sass-loader'],
     [/\.less$/, 'less-loader'],
     [/\.styl(us)?$/, 'stylus-loader']
   ])
 
-  const mediaLoaderMap = [
-    /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-    /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-    /\.(woff2?|eot|ttf|otf)(\?.*)?$/
-  ]
-
-  const cssLoader = ([test, loader]) => {
+  const loader = ([test, loader]) => {
     const use = ['vue-style-loader', 'css-loader', 'postcss-loader']
 
     if (loader !== 'css-loader') use.push(loader)
@@ -33,19 +27,7 @@ const cssLoaders = (MiniCssExtractPlugin) => {
     return { test, use }
   }
 
-  const mediaLoader = (test) => ({
-    test,
-    loader: 'url-loader',
-    options: {
-      limit: 10240,
-      name: 'static/[name].[ext]?[hash]'
-    }
-  })
-
-  return [
-    ...mediaLoaderMap.map(test => mediaLoader(test)),
-    ...[...cssLoaderMap].map(item => cssLoader(item))
-  ]
+  return [...loaderMap].map(item => loader(item))
 }
 
 const config = {
@@ -63,15 +45,11 @@ const config = {
   },
   resolve: {
     alias: {
-      vue: join(__dirname, '../node_modules/vue/dist/vue.esm.js'),
+      vue: join(__dirname, '../node_modules/vue/dist/vue.runtime.js'),
     }
   },
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -80,7 +58,19 @@ const config = {
         ],
         exclude: /(node_modules)/
       },
-      ...cssLoaders(MiniCssExtractPlugin)
+      {
+        test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10240,
+          name: 'assets/[name].[ext]?[hash]'
+        }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      ...cssLoader(MiniCssExtractPlugin)
     ]
   },
   plugins: [
