@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const { join } = require('path')
 const merge = require('webpack-merge')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const Webpackbar = require('webpackbar')

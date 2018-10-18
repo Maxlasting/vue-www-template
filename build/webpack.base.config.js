@@ -82,7 +82,7 @@ const config = {
     new NotifierPlugin({
       title: '编译完成...',
       alwaysNotify,
-      // contentImage: join(__dirname, '../logo.png')
+      contentImage: join(__dirname, '../logo.png')
     })
   ]
 }
