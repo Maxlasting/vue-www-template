@@ -1,47 +1,32 @@
 {
-  "name": "F",
+  "name": "{{ name }}",
   "version": "0.0.1",
   "description": "{{ description }}",
   "main": "./src/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
     "dev": "npm run clean && cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.config.js",
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --color --config ./build/webpack.build.config.js",
-    "test": "npm run clean && cross-env NODE_ENV=production TEST_ENV=yes webpack  --color --config ./build/webpack.test.config.js",
-    "lint": "eslint --ext .js --ext .vue src/",
-    "fixed": "eslint --fix --ext .js,.vue src/",
-    "precommit": "npm run lint"
+    "start": "npm run dev",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --color --config ./build/webpack.build.config.js"
   },
   "author": "{{ author }}",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^8.3.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.3",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.4",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "cross-env": "^5.1.4",
     "css-loader": "^1.0.0",
     "cssnano": "^4.1.0",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "eslint-plugin-vue": "^4.5.0",
     "file-loader": "^2.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^0.14.3",
     "mini-css-extract-plugin": "^0.4.3",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^2.1.4",
@@ -59,8 +44,6 @@
     "webpackbar": "^2.6.3"
   },
   "dependencies": {
-    "vue": "^2.5.16",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue": "^2.5.16"
   }
 }

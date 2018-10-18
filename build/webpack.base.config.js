@@ -38,7 +38,7 @@ const cssLoaders = (MiniCssExtractPlugin) => {
     loader: 'url-loader',
     options: {
       limit: 10240,
-      name: 'static/[name]-[hash:7].[ext]'
+      name: 'static/[name].[ext]?[hash]'
     }
   })
 
@@ -61,18 +61,13 @@ const config = {
   performance: {
     hints: false
   },
+  resolve: {
+    alias: {
+      vue: join(__dirname, '../node_modules/vue/dist/vue.esm.js'),
+    }
+  },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [join(__dirname, '../src')],
-        options: {
-          formatter: require('eslint-friendly-formatter'),
-          emitWarning: true
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'vue-loader'

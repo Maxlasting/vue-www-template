@@ -31,11 +31,6 @@ const config = merge(baseConfig, {
   output: {
     filename: '[name].js'
   },
-  resolve: {
-    alias: {
-      vue: join(__dirname, '../node_modules/vue/dist/vue.esm.js')
-    }
-  },
   devtool: '#cheap-module-source-map',
   plugins: [
     new Webpackbar({ color: '#f46a97' }),

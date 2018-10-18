@@ -1,19 +1,19 @@
+<template>
+  <div id="root">Hello</div>
+</template>
+
 <script>
 export default {
-  render () {
-    return (
-      <div>
-        <router-link class="link" to="/">首页</router-link>
-        <router-link class="link" to="/test">测试页</router-link>
-        <router-view></router-view>
-      </div>
-    )
-  }
+  name: 'App'
 }
 </script>
 
-<style scoped>
-  .link {
-    margin: 20px;
-  }
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 </style>
