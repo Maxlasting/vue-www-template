@@ -4,31 +4,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const NotifierPlugin = require('webpack-Notifier')
 const { publicPath, alwaysNotify } = require('../config.js')
 
-const cssLoader = (MiniCssExtractPlugin) => {
-  const loaderMap = new Map([
-    [/\.css$/, 'css-loader'],
-    [/\.scss$/, 'sass-loader'],
-    [/\.less$/, 'less-loader'],
-    [/\.styl(us)?$/, 'stylus-loader']
-  ])
-
-  const loader = ([test, loader]) => {
-    const use = ['vue-style-loader', 'css-loader', 'postcss-loader']
-
-    if (loader !== 'css-loader') use.push(loader)
-
-    if (process.env.NODE_ENV === 'production') {
-      use.shift()
-      use.shift()
-      use.unshift(MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { minimize: true } })
-    }
-
-    return { test, use }
-  }
-
-  return [...loaderMap].map(item => loader(item))
-}
-
 const config = {
   mode: process.env.NODE_ENV,
   target: 'web',
