@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { join } = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const NotifierPlugin = require('webpack-Notifier')
 const { publicPath, alwaysNotify } = require('../config.js')
@@ -59,42 +58,46 @@ const config = {
         exclude: /(node_modules)/
       },
       {
-        test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10240,
-          name: 'assets/[name].[ext]?[hash]'
-        }
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
-      ...cssLoader(MiniCssExtractPlugin)
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'images/[name].[ext]?[hash]'
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'fonts/[name].[ext]?[hash]'
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'file-loader',
+        options: {
+          name: 'medias/[name].[ext]?[hash]'
+        }
+      }
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: join(__dirname, '../index.html')
     }),
-    new VueLoaderPlugin(),
     new NotifierPlugin({
       title: '编译完成...',
       alwaysNotify,
       contentImage: join(__dirname, '../logo.png')
     })
   ]
-}
-
-console.log(process.env.NODE_ENV)
-
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new MiniCssExtractPlugin({
-      filename: process.env.TEST_ENV ? '[name].css' : '[name]-[contenthash].css'
-    })
-  )
 }
 
 module.exports = config

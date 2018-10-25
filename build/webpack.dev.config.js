@@ -9,21 +9,19 @@ const baseConfig = require('./webpack.base.config.js')
 
 console.log(`当前环境变量 ======> ${nodeEnv}`)
 
-function getIp () {
-  const os = require('os')
-  const interfaces = os.networkInterfaces()
+const os = require('os')
+const interfaces = os.networkInterfaces()
 
-  for (let key in interfaces) {
-    const items = interfaces[key]
-    for (let i=0; i<items.length; i++) {
-      const item = items[i]
-      if (item.family === 'IPv4' && !item.internal && item.address !== '127.0.0.1') {
-        return item.address
-      }
+let ip = '0.0.0.0'
+
+for (let key in interfaces) {
+  const items = interfaces[key]
+  for (let i=0; i<items.length; i++) {
+    const item = items[i]
+    if (item.family === 'IPv4' && !item.internal && item.address !== '127.0.0.1') {
+      ip = item.address
     }
   }
-
-  return false
 }
 
 const config = merge(baseConfig, {
@@ -31,6 +29,45 @@ const config = merge(baseConfig, {
     filename: '[name].js'
   },
   devtool: '#cheap-module-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader'
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          'less-loader'
+        ]
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          'stylus-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
     new Webpackbar({ color: '#f46a97' }),
     new webpack.DefinePlugin({
@@ -40,7 +77,7 @@ const config = merge(baseConfig, {
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
         messages: [`您的项目运行在 http://localhost:${port}`],
-        notes: [`您也可以查看您的 电脑ip + 端口号 (http://${getIp()}:${port}) 来访问！`]
+        notes: [`您也可以查看您的 电脑ip + 端口号 (http://${ip}:${port}) 来访问！`]
       },
       clearConsole: true
     })
