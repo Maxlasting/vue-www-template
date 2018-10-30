@@ -2,10 +2,9 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const Webpackbar = require('webpackbar')
-
-const nodeEnv = process.env.NODE_ENV || 'development'
 const { host, port, open, hot, proxy, contentBase, publicPath } = require('../config.js')
 const baseConfig = require('./webpack.base.config.js')
+const nodeEnv = process.env.NODE_ENV
 
 console.log(`当前环境变量 ======> ${nodeEnv}`)
 
@@ -25,49 +24,7 @@ for (let key in interfaces) {
 }
 
 const config = merge(baseConfig, {
-  output: {
-    filename: '[name].js'
-  },
   devtool: '#cheap-module-source-map',
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
-      },
-      {
-        test: /\.less$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader',
-          'less-loader'
-        ]
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader',
-          'sass-loader'
-        ]
-      },
-      {
-        test: /\.styl(us)?$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader',
-          'stylus-loader'
-        ]
-      }
-    ]
-  },
   plugins: [
     new Webpackbar({ color: '#f46a97' }),
     new webpack.DefinePlugin({
