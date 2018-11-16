@@ -3,14 +3,14 @@ const { join } = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const NotifierPlugin = require('webpack-Notifier')
 const merge = require('webpack-merge')
-const loaderConfig = require('./create-loader.config.js')
+const loaderConfig = require('./webpack.loader.config.js')
 const { publicPath, alwaysNotify } = require('../config.js')
 
 const config = merge(loaderConfig, {
   mode: process.env.NODE_ENV,
   target: 'web',
   output: {
-    filename: 'scripts/[name].js'
+    filename: '[name].js'
   },
   entry: {
     'client-bundle': join(__dirname, '../src/', 'index.js')

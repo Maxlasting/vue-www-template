@@ -28,7 +28,7 @@ const config = merge(baseConfig, {
 })
 
 if (nodeEnv === 'production') {
-  config.output.filename = 'scripts/[name].js?fq-[chunkhash]'
+  config.output.filename = '[name].js?fq-[chunkhash]'
 
   config.plugins.push(
     new OptimizeCssAssetsWebpackPlugin({

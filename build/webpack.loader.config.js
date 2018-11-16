@@ -28,7 +28,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10240,
-          name: 'images/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]'
         }
       },
       {
@@ -36,14 +36,14 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10240,
-          name: 'fonts/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]'
         }
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'file-loader',
         options: {
-          name: 'medias/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]'
         }
       },
       {
@@ -66,7 +66,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: isDev ? 'styles/[name].css' : 'styles/[name].css?fq-[contenthash]'
+      filename: isDev ? '[name].css' : '[name].css?fq-[contenthash]'
     })
   ]
 }
