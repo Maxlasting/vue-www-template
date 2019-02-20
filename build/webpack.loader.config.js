@@ -28,7 +28,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10240,
-          name: '[name].[ext]?[hash]'
+          name: 'assets/[name].[ext]?[hash]'
         }
       },
       {
@@ -36,14 +36,14 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10240,
-          name: '[name].[ext]?[hash]'
+          name: 'assets/[name].[ext]?[hash]'
         }
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          name: 'assets/[name].[ext]?[hash]'
         }
       },
       {
