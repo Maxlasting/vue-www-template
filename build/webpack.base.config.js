@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { join } = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const NotifierPlugin = require('webpack-Notifier')
+const NotifierPlugin = require('webpack-notifier')
 const merge = require('webpack-merge')
 const loaderConfig = require('./webpack.loader.config.js')
 const { publicPath, alwaysNotify } = require('../config.js')
