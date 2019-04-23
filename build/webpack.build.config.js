@@ -32,6 +32,7 @@ if (nodeEnv === 'production') {
 
   config.plugins.push(
     new OptimizeCssAssetsWebpackPlugin({
+      assetNameRegExp: /\.css(\?.*)?$/g,
       cssProcessor: require('cssnano'),
       cssProcessorOptions: {
         discardComments: { removeAll: true }

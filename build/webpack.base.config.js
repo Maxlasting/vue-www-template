@@ -9,13 +9,11 @@ const { publicPath, alwaysNotify } = require('../config.js')
 const config = merge(loaderConfig, {
   mode: process.env.NODE_ENV,
   target: 'web',
-  output: {
-    filename: '[name].js'
-  },
   entry: {
-    'client-bundle': join(__dirname, '../src/', 'index.js')
+    'client-bundle': ['@babel/polyfill', join(__dirname, '../src/', 'index.js')]
   },
   output: {
+    filename: '[name].js',
     path: join(__dirname, '../dist'),
     publicPath
   },
