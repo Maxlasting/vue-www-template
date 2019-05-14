@@ -1,59 +1,65 @@
 const webpack = require('webpack')
+const { join } = require('path')
 const merge = require('webpack-merge')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const Webpackbar = require('webpackbar')
-const { host, port, open, hot, proxy, contentBase, publicPath } = require('../config.js')
 const baseConfig = require('./webpack.base.config.js')
-const nodeEnv = process.env.NODE_ENV
+const Webpackbar = require('webpackbar')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-console.log(`当前环境变量 ======> ${nodeEnv}`)
+const userConfig = require('../config.js')
 
 const os = require('os')
-const interfaces = os.networkInterfaces()
 
-let ip = '0.0.0.0'
-
-for (let key in interfaces) {
-  const items = interfaces[key]
-  for (let i=0; i<items.length; i++) {
-    const item = items[i]
-    if (item.family === 'IPv4' && !item.internal && item.address !== '127.0.0.1') {
-      ip = item.address
+const iptools = function () {
+  let ip = '0.0.0.0'
+  let interfaces = os.networkInterfaces()
+  for (let key in interfaces) {
+    const items = interfaces[key]
+    for (let item of items) {
+      if (item.family === 'IPv4' && !item.internal && item.address !== '127.0.0.1') {
+        ip = item.address
+        return ip
+      }
     }
   }
 }
 
-const config = merge(baseConfig, {
+module.exports = merge(baseConfig, {
+  output: {
+    filename: '[name].js',
+  },
   devtool: '#cheap-module-source-map',
   plugins: [
     new Webpackbar({ color: '#f46a97' }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(nodeEnv)
-    }),
-    new webpack.HotModuleReplacementPlugin(),
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
-        messages: [`您的项目运行在 http://localhost:${port}`],
-        notes: [`您也可以查看您的 电脑ip + 端口号 (http://${ip}:${port}) 来访问！`]
+        messages: [`您的项目运行在 http://localhost:${userConfig.devServer.port}`],
+        notes: [`您也可以查看您的 电脑ip + 端口号 (http://${iptools()}:${userConfig.devServer.port}) 来访问！`]
       },
-      clearConsole: true
-    })
+      clearConsole: true,
+    }),
+    new HtmlWebpackPlugin({
+      template: join(__dirname, '..', 'index.html'),
+      filename: 'index.html',
+    }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-    host,
-    port,
-    open,
-    hot,
-    proxy,
-    contentBase,
+    ...userConfig.devServer,
+    hot: true,
     clientLogLevel: 'none',
-    overlay: { warnings: true, errors: true },
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
     quiet: true,
     progress: false,
     historyApiFallback: {
-      index: publicPath + 'index.html'
-    }
+      index: baseConfig.output.publicPath + 'index.html'
+    },
+    stats: {
+      colors: true
+    },
   }
 })
 
-module.exports = config

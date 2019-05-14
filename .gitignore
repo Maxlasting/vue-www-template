@@ -10,4 +10,6 @@ npm-debug.log*
 *.njsproj
 *.sln
 
-/dist/
+dist/
+
+package-lock.json
