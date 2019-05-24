@@ -2,10 +2,9 @@ const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const WebpackNotifier = require('webpack-notifier')
 const { join } = require('path')
-
-const isDev = process.env.NODE_ENV === 'development'
-const userConfig = require('../config.js')
-const styleLoaders = require('./styles-loaders.js')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const styleLoaders = require('./styleLoaders.js')
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -15,38 +14,38 @@ module.exports = {
   },
   output: {
     path: join(__dirname, '../dist'),
-    publicPath: userConfig.build.publicPath,
   },
   performance: {
     hints: false,
   },
   resolve: {
     alias: {
-      vue: join(
-        __dirname, '..', 'node_modules', 'vue', 'dist', 'vue.runtime.js'
-      ),
+      'vue': join(__dirname, '..', 'node_modules', 'vue', 'dist', 'vue.runtime.js'),
+      '@views': join(__dirname, '..', 'src', 'views'),
+      '@api': join(__dirname, '..', 'src', 'api'),
+      '@components': join(__dirname, '..', 'src', 'components'),
+      '@app': join(__dirname, '..', 'src', 'app.vue'),
+      '@utils': join(__dirname, '..', 'src', 'utils'),
     },
   },
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        use: ['vue-loader'],
+        test: /\.js(\?.*)?$/,
+        exclude: /(node_modules)/,
+        loader: 'babel-loader',
       },
       {
-        test: /\.js$/,
-        use: ['babel-loader'],
-        exclude: /(node_modules)/,
+        test: /\.vue$/,
+        loader: 'vue-loader',
       },
       {
         // 对图片文件进行打包编译
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          // 文件的大小小于10000字节(10kb)的时候会返回一个dataUrl
           limit: 10000,
-          // 生成的文件的保存路径和后缀名称
-          name: 'assets/[name].[hash:7].[ext]'
+          name: 'assets/imgs/[name].[hash:7].[ext]'
         }
       },
       {
@@ -55,7 +54,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'assets/[name].[hash:7].[ext]'
+          name: 'assets/medias/[name].[hash:7].[ext]'
         }
       },
       {
@@ -64,23 +63,28 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'assets/[name].[hash:7].[ext]'
+          name: 'assets/fonts/[name].[hash:7].[ext]'
         }
       },
-      ...styleLoaders({
-        extract: !isDev,
-        postcss: userConfig.build.postcss,
-        sourceMap: true,
-      }),
+      ...styleLoaders(),
     ]
   },
   plugins: [
     new WebpackNotifier({
       title: 'build completed...',
-      alwaysNotify: userConfig.plugins.alwaysNotify,
+      alwaysNotify: false,
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+    new CopyWebpackPlugin([{
+      ignore: ['.*'],
+      from: join(__dirname, '..', 'public'),
+      to: 'static',
+    }]),
+    new HtmlWebpackPlugin({
+      template: join(__dirname, '..', 'index.html'),
+      filename: 'index.html',
     }),
     new VueLoaderPlugin(),
   ],

@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import App from './App.vue'
+import app from './app.vue'
 
 Vue.config.productionTip = false
 
 new Vue({
   el: '#root',
-  render: h => h(App)
+  render: h => h(app)
 })

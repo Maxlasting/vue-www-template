@@ -1,18 +1,17 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const isDev = process.env.NODE_ENV === 'development'
 
-const cssLoaders = function (options) {
-  options = options || {}
-
+const cssLoaders = function () {
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      sourceMap: options.sourceMap
+      sourceMap: isDev
     }
   }
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: options.sourceMap,
+      sourceMap: isDev,
       plugins: [
         require('autoprefixer')
       ]
@@ -20,21 +19,21 @@ const cssLoaders = function (options) {
   }
 
   function generateLoaders (loader, loaderOptions = {}) {
-    const loaders = options.postcss ? [cssLoader, postcssLoader] : [cssLoader]
+    const loaders = [cssLoader, postcssLoader]
 
     if (loader) {
       const someLoader = `${loader}-loader`
       const someOptions = Object.assign(
-        {}, { sourceMap: options.sourceMap, }, loaderOptions
+        {}, { sourceMap: isDev, }, loaderOptions
       )
       loaders.push({ loader: someLoader, options: someOptions })
     }
 
-    if (options.extract) {
+    if (!isDev) {
       loaders.unshift({
         loader: MiniCssExtractPlugin.loader,
         options: {
-          publicPath: options.publicPath || '..'
+          publicPath: '../..'
         }
       })
     } else {
@@ -49,7 +48,7 @@ const cssLoaders = function (options) {
     css: generateLoaders(),
     // less-loader
     less: generateLoaders('less'),
-    // sass-loader 后面的选项表明sass使用的是缩进的愈发
+    // sass-loader 后面的选项表明sass使用的是缩进的语法
     sass: generateLoaders('sass', { indentedSyntax: true }),
     // scss-loader
     scss: generateLoaders('sass'),
@@ -61,11 +60,11 @@ const cssLoaders = function (options) {
 }
 
 // 使用这个函数，为那些独立的style文件创建加载器配置。
-const styleLoaders = function (options) {
+const styleLoaders = function () {
   // 保存加载器配置的变量
   const output = []
   // 获取所有css文件类型的loaders
-  const loaders = cssLoaders(options)
+  const loaders = cssLoaders()
 
   // console.log(loaders)
 

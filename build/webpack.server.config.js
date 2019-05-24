@@ -1,10 +1,9 @@
 const webpack = require('webpack')
-const { join } = require('path')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.config.js')
 const Webpackbar = require('webpackbar')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const portfinder = require('portfinder')
 
 const userConfig = require('../config.js')
 
@@ -24,42 +23,49 @@ const iptools = function () {
   }
 }
 
-module.exports = merge(baseConfig, {
+const config = merge(baseConfig, {
   output: {
     filename: '[name].js',
+    publicPath: userConfig.dev.publicPath,
   },
   devtool: '#cheap-module-source-map',
   plugins: [
     new Webpackbar({ color: '#f46a97' }),
-    new FriendlyErrorsPlugin({
-      compilationSuccessInfo: {
-        messages: [`您的项目运行在 http://localhost:${userConfig.devServer.port}`],
-        notes: [`您也可以查看您的 电脑ip + 端口号 (http://${iptools()}:${userConfig.devServer.port}) 来访问！`]
-      },
-      clearConsole: true,
-    }),
-    new HtmlWebpackPlugin({
-      template: join(__dirname, '..', 'index.html'),
-      filename: 'index.html',
-    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-    ...userConfig.devServer,
+    host: '0.0.0.0',
+    port: userConfig.dev.port,
     hot: true,
+    open: false,
+    contentBase: false,
+    quiet: true,
+    progress: false,
     clientLogLevel: 'none',
     overlay: {
       warnings: true,
       errors: true,
     },
-    quiet: true,
-    progress: false,
     historyApiFallback: {
       index: baseConfig.output.publicPath + 'index.html'
-    },
-    stats: {
-      colors: true
     },
   }
 })
 
+module.exports = new Promise(async (resolve, reject) => {
+  portfinder.basePort = process.env.PORT || userConfig.dev.port || 8080
+  portfinder.getPort((err, port) => {
+    if (err) return reject(err)
+    config.devServer.port = port
+    config.plugins.push(
+      new FriendlyErrorsPlugin({
+        compilationSuccessInfo: {
+          messages: [`您的项目运行在 http://localhost:${port}`],
+          notes: [`您也可以查看您的 电脑ip + 端口号 (http://${iptools()}:${port}) 来访问！`]
+        },
+        clearConsole: true,
+      })
+    )
+    resolve(config)
+  })
+})
