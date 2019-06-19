@@ -80,7 +80,7 @@ module.exports = {
     new CopyWebpackPlugin([{
       ignore: ['.*'],
       from: join(__dirname, '..', 'public'),
-      to: 'static',
+      to: 'public',
     }]),
     new HtmlWebpackPlugin({
       template: join(__dirname, '..', 'index.html'),
