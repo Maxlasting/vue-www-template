@@ -22,6 +22,7 @@ module.exports = {
     alias: {
       'vue': join(__dirname, '..', 'node_modules', 'vue', 'dist', 'vue.runtime.js'),
       '@views': join(__dirname, '..', 'src', 'views'),
+      '@pages': join(__dirname, '..', 'src', 'pages'),
       '@api': join(__dirname, '..', 'src', 'api'),
       '@components': join(__dirname, '..', 'src', 'components'),
       '@app': join(__dirname, '..', 'src', 'app.vue'),
@@ -85,6 +86,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, '..', 'index.html'),
       filename: 'index.html',
+      // UnhandledPromiseRejectionWarning: Error: Cyclic dependency
+      "chunksSortMode": 'none',
     }),
     new VueLoaderPlugin(),
   ],

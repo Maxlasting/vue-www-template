@@ -41,13 +41,14 @@ const config = merge(baseConfig, {
     contentBase: false,
     quiet: true,
     progress: false,
+    proxy: userConfig.dev.proxy,
     clientLogLevel: 'none',
     overlay: {
       warnings: true,
       errors: true,
     },
     historyApiFallback: {
-      index: baseConfig.output.publicPath + 'index.html'
+      index: userConfig.dev.publicPath + 'index.html'
     },
   }
 })
